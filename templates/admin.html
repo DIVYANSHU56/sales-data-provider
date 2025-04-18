@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Admin - Smart Recommendation System{% endblock %}
+
+{% block content %}
+  <h2>Admin - Enter Sales Provider Data</h2>
+  {% if success %}
+    <div class="alert alert-success">{{ success }}</div>
+  {% endif %}
+  <form method="POST" class="mt-4">
+    <div class="mb-3">
+      <label for="shopkeeper_name" class="form-label">Shopkeeper Name</label>
+      <input type="text" class="form-control" id="shopkeeper_name" name="shopkeeper_name" required />
+    </div>
+    <div class="mb-3">
+      <label for="area" class="form-label">Area</label>
+      <input type="text" class="form-control" id="area" name="area" required />
+    </div>
+    <div class="mb-3">
+      <label for="pincode" class="form-label">Pincode</label>
+      <input type="text" class="form-control" id="pincode" name="pincode" required />
+    </div>
+    <div class="mb-3">
+      <label for="mobile_number" class="form-label">Mobile Number</label>
+      <input type="text" class="form-control" id="mobile_number" name="mobile_number" required />
+    </div>
+    <div class="mb-3">
+      <label for="revenue" class="form-label">Revenue</label>
+      <input type="number" step="0.01" class="form-control" id="revenue" name="revenue" required />
+    </div>
+    <div class="mb-3">
+      <label for="target" class="form-label">Target</label>
+      <input type="number" step="0.01" class="form-control" id="target" name="target" required />
+    </div>
+    <div class="mb-3">
+      <label for="latitude" class="form-label">Latitude</label>
+      <input type="number" step="0.000001" class="form-control" id="latitude" name="latitude" required />
+    </div>
+    <div class="mb-3">
+      <label for="longitude" class="form-label">Longitude</label>
+      <input type="number" step="0.000001" class="form-control" id="longitude" name="longitude" required />
+    </div>
+    <button type="submit" class="btn btn-success">Add Data</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Smart Recommendation System{% endblock %}
+
+{% block head %}
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyArHZBnGJSJNqyITiQWD2DsEfy8wBb-UqI",
+      authDomain: "sales-2025-d7c6f.firebaseapp.com",
+      projectId: "sales-2025-d7c6f",
+      storageBucket: "sales-2025-d7c6f.firebasestorage.app",
+      messagingSenderId: "855617694940",
+      appId: "1:855617694940:web:fc6f360ffd1c511002d819",
+      measurementId: "G-CGTS65YWQR"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    function registerUser(event) {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          alert('Registration successful. You can now login.');
+          window.location.href = '/login';
+        })
+        .catch((error) => {
+          document.getElementById('error').textContent = error.message;
+        });
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4">Register</h2>
+    <form id="registerForm" method="POST" onsubmit="registerUser(event)">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="email" name="email" required />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" name="password" required />
+      </div>
+      <div id="error" class="text-danger mb-3"></div>
+      <button type="submit" class="btn btn-primary">Register</button>
+    </form>
+  </div>
+{% endblock %}
