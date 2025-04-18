@@ -24,9 +24,11 @@ model.fit(X, y)
 
 df = df.sort_values(by='Revenue', ascending=False)
 
+from flask import redirect
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return redirect("http://localhost:3000")
 
 @app.route('/search', methods=['POST'])
 def search():
