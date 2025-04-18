@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /shopkeepers/{shopkeeperId} {
+      allow read, write: if request.auth != null
+        && isValidShopkeeper(request.resource.data);
+    }
+
+    function isValidShopkeeper(data) {
+      return data.keys().hasAll([
+        'shopkeeper_name',
+        'area',
+        'pincode',
+        'mobile_number',
+        'revenue',
+        'target',
+        'latitude',
+        'longitude',
+        'achieved_target'
+      ])
+      && data.shopkeeper_name is string
+      && data.area is string
+      && data.pincode is string
+      && data.mobile_number is string
+      && data.revenue is number
+      && data.target is number
+      && data.latitude is number
+      && data.longitude is number
+      && data.achieved_target is number;
+    }
+  }
+}

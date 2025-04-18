@@ -33,9 +33,14 @@ function Navbar() {
                 </li>
               </>
             ) : (
-              <li className="nav-item">
-                <button className="btn btn-link nav-link" onClick={handleLogout}>Logout</button>
-              </li>
+              <>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/add-sales-provider">Add Sales Provider</Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-link nav-link" onClick={handleLogout}>Logout</button>
+                </li>
+              </>
             )}
           </ul>
         </div>

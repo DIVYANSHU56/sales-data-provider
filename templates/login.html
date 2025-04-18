@@ -40,6 +40,26 @@
           document.getElementById('error').textContent = error.message;
         });
     }
+
+    function googleLogin() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          return result.user.getIdToken();
+        })
+        .then((idToken) => {
+          const form = document.getElementById('loginForm');
+          const tokenInput = document.createElement('input');
+          tokenInput.type = 'hidden';
+          tokenInput.name = 'idToken';
+          tokenInput.value = idToken;
+          form.appendChild(tokenInput);
+          form.submit();
+        })
+        .catch((error) => {
+          document.getElementById('error').textContent = error.message;
+        });
+    }
   </script>
 {% endblock %}
 
@@ -58,5 +78,7 @@
       <div id="error" class="text-danger mb-3"></div>
       <button type="submit" class="btn btn-primary">Login</button>
     </form>
+    <hr />
+    <button onclick="googleLogin()" class="btn btn-danger mt-3">Sign in with Google</button>
   </div>
 {% endblock %}

@@ -4,8 +4,8 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Admin from './pages/Admin'
 import Results from './pages/Results'
+import AddSalesProvider from './pages/AddSalesProvider'
 
 function App() {
   return (
@@ -15,8 +15,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/admin" element={<Admin />} />
         <Route path="/results" element={<Results />} />
+        <Route path="/add-sales-provider" element={<AddSalesProvider />} />
       </Routes>
     </Router>
   )

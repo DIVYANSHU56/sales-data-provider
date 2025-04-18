@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initializeApp } from 'firebase/app'
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyArHZBnGJSJNqyITiQWD2DsEfy8wBb-UqI",
@@ -15,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
+const provider = new GoogleAuthProvider()
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -28,9 +29,20 @@ function Login() {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password)
       const idToken = await userCredential.user.getIdToken()
-      // Store token or user info as needed
       localStorage.setItem('user', JSON.stringify(userCredential.user))
-      // Redirect to admin page
+      navigate('/admin')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  const handleGoogleLogin = async () => {
+    setError('')
+    try {
+      const result = await signInWithPopup(auth, provider)
+      const user = result.user
+      const idToken = await user.getIdToken()
+      localStorage.setItem('user', JSON.stringify(user))
       navigate('/admin')
     } catch (err) {
       setError(err.message)
@@ -66,6 +78,10 @@ function Login() {
         {error && <div className="text-danger mb-3">{error}</div>}
         <button type="submit" className="btn btn-primary">Login</button>
       </form>
+      <hr />
+      <button onClick={handleGoogleLogin} className="btn btn-danger mt-3">
+        Sign in with Google
+      </button>
     </div>
   )
 }

@@ -31,6 +31,18 @@
           document.getElementById('error').textContent = error.message;
         });
     }
+
+    function googleRegister() {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithPopup(provider)
+        .then((result) => {
+          // Registration successful, redirect to admin or login
+          window.location.href = '/admin';
+        })
+        .catch((error) => {
+          document.getElementById('error').textContent = error.message;
+        });
+    }
   </script>
 {% endblock %}
 
@@ -49,5 +61,7 @@
       <div id="error" class="text-danger mb-3"></div>
       <button type="submit" class="btn btn-primary">Register</button>
     </form>
+    <hr />
+    <button onclick="googleRegister()" class="btn btn-danger mt-3">Register with Google</button>
   </div>
 {% endblock %}

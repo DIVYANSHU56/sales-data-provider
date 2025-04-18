@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { initializeApp } from 'firebase/app'
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth'
+import { getAuth, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: "AIzaSyArHZBnGJSJNqyITiQWD2DsEfy8wBb-UqI",
@@ -15,6 +15,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
+const provider = new GoogleAuthProvider()
 
 function Register() {
   const [email, setEmail] = useState('')
@@ -29,6 +30,18 @@ function Register() {
       await createUserWithEmailAndPassword(auth, email, password)
       alert('Registration successful. You can now login.')
       navigate('/login')
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
+  const handleGoogleRegister = async () => {
+    setError('')
+    try {
+      const result = await signInWithPopup(auth, provider)
+      const user = result.user
+      // Optionally, you can handle user info or token here
+      navigate('/admin')
     } catch (err) {
       setError(err.message)
     }
@@ -63,6 +76,10 @@ function Register() {
         {error && <div className="text-danger mb-3">{error}</div>}
         <button type="submit" className="btn btn-primary">Register</button>
       </form>
+      <hr />
+      <button onClick={handleGoogleRegister} className="btn btn-danger mt-3">
+        Register with Google
+      </button>
     </div>
   )
 }

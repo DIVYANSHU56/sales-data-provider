@@ -146,5 +146,41 @@ def admin():
             return render_template('admin.html', success='Data added successfully.')
     return render_template('admin.html')
 
+import pandas as pd
+from firebase_admin import db as firebase_db
+from flask import jsonify
+
+@app.route('/import-xlsx', methods=['POST'])
+def import_xlsx():
+    if not is_admin():
+        return jsonify({'error': 'Unauthorized'}), 403
+
+    try:
+        EXCEL_FILE = 'shopkeepers.xlsx'
+        df = pd.read_excel(EXCEL_FILE)
+
+        ref_shopkeepers = firebase_db.reference('shopkeepers')
+
+        # Clear existing data (optional)
+        ref_shopkeepers.delete()
+
+        for _, row in df.iterrows():
+            data = {
+                'shopkeeper_name': row.get('Shopkeeper_Name', '') or '',
+                'area': row.get('Area', '') or '',
+                'pincode': str(row.get('Pincode', '') or ''),
+                'mobile_number': str(row.get('Mobile_Number', '') or ''),
+                'revenue': float(row.get('Revenue', 0) or 0),
+                'target': float(row.get('Target', 0) or 0),
+                'latitude': float(row.get('Latitude', 0) or 0),
+                'longitude': float(row.get('Longitude', 0) or 0),
+                'achieved_target': float(row.get('Achieved_Target', 0) or 0)
+            }
+            ref_shopkeepers.push(data)
+
+        return jsonify({'success': True, 'message': 'Data imported successfully from XLSX.'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
